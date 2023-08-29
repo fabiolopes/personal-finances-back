@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
@@ -38,12 +40,16 @@ public class PurchaseServiceImpl implements PurchaseService {
         Purchase purchase = Purchase.builder().date(Instant.now()).build();
         setStore(purchaseRequest.store().name(), purchase);
         setPaymentMethod(purchaseRequest.paymentMethod().method(), purchase);
-        ProductData productData = ProductData.builder().price(purchaseRequest.preco())
-                .referenceDate(LocalDate.now()).build();
-        setProduct(productData, purchaseRequest.product());
-        Item item = Item.builder().valuePaid(purchaseRequest.valorPago()).qtd(purchaseRequest.qtd())
-                .date(Instant.now()).productData(productData).build();
-        purchase.setItems(Collections.singletonList(item));
+        List<Item> items = new ArrayList<>();
+        purchaseRequest.items().stream().forEach(itemDTO -> {
+            ProductData productData = ProductData.builder().price(itemDTO.price())
+                    .referenceDate(LocalDate.now()).build();
+            setProduct(productData, itemDTO.product());
+            Item item = Item.builder().valuePaid(itemDTO.valuePaid()).qtd(itemDTO.qtd())
+                    .date(Instant.now()).productData(productData).build();
+            items.add(item);
+        });
+        purchase.setItems(items);
         Purchase saved = purchaseRepository.save(purchase);
         return modelMapper.map(saved, NewPurchaseDTO.class);
     }
