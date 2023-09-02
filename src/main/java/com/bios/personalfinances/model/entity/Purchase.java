@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
@@ -20,4 +21,5 @@ public class Purchase {
     private PaymentMethod paymentMethod;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Store store;
+    private BigDecimal total;
 }

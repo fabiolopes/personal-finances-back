@@ -1,3 +1,13 @@
 package com.bios.personalfinances.model.entity.dto;
 
-public record ProductDTO(Long id, String name, String description, String unit) {}
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class ProductDTO{
+    private Long id;
+    private String name;
+    private String description;
+    private String unit;
+}

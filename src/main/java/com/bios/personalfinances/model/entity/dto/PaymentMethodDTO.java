@@ -1,3 +1,15 @@
 package com.bios.personalfinances.model.entity.dto;
 
-public record PaymentMethodDTO(Long id, String method) {}
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class PaymentMethodDTO{
+    private Long id;
+    private String method;
+}

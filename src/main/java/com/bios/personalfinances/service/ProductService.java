@@ -1,7 +1,7 @@
 package com.bios.personalfinances.service;
 
-import com.bios.personalfinances.model.entity.Product;
+import com.bios.personalfinances.model.entity.dto.ProductDTO;
 
 public interface ProductService {
-    Product findByName(String name);
+    ProductDTO findByName(String name);
 }

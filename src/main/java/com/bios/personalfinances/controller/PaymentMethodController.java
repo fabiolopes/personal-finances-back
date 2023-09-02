@@ -2,6 +2,7 @@ package com.bios.personalfinances.controller;
 
 import com.bios.personalfinances.model.entity.PaymentMethod;
 import com.bios.personalfinances.model.entity.Store;
+import com.bios.personalfinances.model.entity.dto.PaymentMethodDTO;
 import com.bios.personalfinances.repository.PaymentMethodRepository;
 import com.bios.personalfinances.service.PaymentMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class PaymentMethodController {
     private PaymentMethodService paymentMethodService;
 
     @GetMapping("/findByMethod/{method}")
-    public ResponseEntity<PaymentMethod> findByMethod(@PathVariable("method") String method){
+    public ResponseEntity<PaymentMethodDTO> findByMethod(@PathVariable("method") String method){
         return ResponseEntity.ok(paymentMethodService.findByMethod(method));
     }
 

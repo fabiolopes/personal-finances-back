@@ -1,7 +1,7 @@
 package com.bios.personalfinances.service;
 
-import com.bios.personalfinances.model.entity.PaymentMethod;
+import com.bios.personalfinances.model.entity.dto.PaymentMethodDTO;
 
 public interface PaymentMethodService {
-    PaymentMethod findByMethod(String method);
+    PaymentMethodDTO findByMethod(String method);
 }

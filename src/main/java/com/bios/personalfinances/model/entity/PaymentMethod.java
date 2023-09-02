@@ -11,8 +11,9 @@ import javax.persistence.Id;
 
 @Entity
 @Builder
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class PaymentMethod {
     @Id @GeneratedValue
     private Long id;

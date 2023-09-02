@@ -19,7 +19,7 @@ public class PurchaseController {
     private PurchaseService purchaseService;
 
     @PostMapping
-    public ResponseEntity<NewPurchaseDTO> create(@RequestBody PurchaseRequest request){
+    public ResponseEntity<NewPurchaseDTO> create(@RequestBody PurchaseRequest request) {
         return new ResponseEntity(purchaseService.newPurchase(request), HttpStatus.CREATED);
     }
 }

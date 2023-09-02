@@ -1,7 +1,7 @@
 package com.bios.personalfinances.service;
 
-import com.bios.personalfinances.model.entity.Store;
+import com.bios.personalfinances.model.entity.dto.StoreDTO;
 
 public interface StoreService {
-    Store findByName(String name);
+    StoreDTO findByName(String name);
 }

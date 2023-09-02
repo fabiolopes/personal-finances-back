@@ -1,7 +1,6 @@
 package com.bios.personalfinances.controller;
 
-import com.bios.personalfinances.model.entity.Product;
-import com.bios.personalfinances.repository.ProductRepository;
+import com.bios.personalfinances.model.entity.dto.ProductDTO;
 import com.bios.personalfinances.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/findByName/{name}")
-    public ResponseEntity<Product> findByName(@PathVariable("name") String name) {
+    public ResponseEntity<ProductDTO> findByName(@PathVariable("name") String name) {
         return ResponseEntity.ok(productService.findByName(name));
     }
 }
