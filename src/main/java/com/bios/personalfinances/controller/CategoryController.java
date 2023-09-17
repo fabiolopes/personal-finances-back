@@ -1,7 +1,7 @@
 package com.bios.personalfinances.controller;
 
-import com.bios.personalfinances.model.dto.ProductDTO;
-import com.bios.personalfinances.service.ProductService;
+import com.bios.personalfinances.model.dto.CategoryDTO;
+import com.bios.personalfinances.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("product")
-public class ProductController {
+@RequestMapping("category")
+public class CategoryController {
 
     @Autowired
-    private ProductService productService;
+    private CategoryService categoryService;
 
     @GetMapping("/findByName/{name}")
-    public ResponseEntity<ProductDTO> findByName(@PathVariable("name") String name) {
-        return ResponseEntity.ok(productService.findByName(name));
+    public ResponseEntity<CategoryDTO> findByName(@PathVariable("name") String name){
+        return ResponseEntity.ok(categoryService.findByName(name));
     }
 }

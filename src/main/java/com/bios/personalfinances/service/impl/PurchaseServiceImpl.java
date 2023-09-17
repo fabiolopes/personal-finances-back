@@ -1,17 +1,16 @@
 package com.bios.personalfinances.service.impl;
 
+import com.bios.personalfinances.model.dto.*;
 import com.bios.personalfinances.model.entity.*;
-import com.bios.personalfinances.model.entity.dto.ItemDTO;
-import com.bios.personalfinances.model.entity.dto.NewPurchaseDTO;
-import com.bios.personalfinances.model.entity.dto.ProductDTO;
-import com.bios.personalfinances.model.entity.request.PurchaseRequest;
+import com.bios.personalfinances.model.request.PurchaseRequest;
 import com.bios.personalfinances.repository.PaymentMethodRepository;
 import com.bios.personalfinances.repository.ProductRepository;
 import com.bios.personalfinances.repository.PurchaseRepository;
 import com.bios.personalfinances.repository.StoreRepository;
-import com.bios.personalfinances.service.ProductService;
+import com.bios.personalfinances.service.CategoryService;
 import com.bios.personalfinances.service.PurchaseService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@SuppressWarnings("unused")
 public class PurchaseServiceImpl implements PurchaseService {
 
     @Autowired
@@ -36,18 +36,30 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @Override
     public NewPurchaseDTO newPurchase(PurchaseRequest purchaseRequest) {
         Purchase purchase = Purchase.builder().date(Instant.now()).total(purchaseRequest.total()).build();
         setStore(purchaseRequest.store().getName(), purchase);
         setPaymentMethod(purchaseRequest.paymentMethod().getMethod(), purchase);
+        setCategory(purchaseRequest.category(), purchase);
         List<Item> items = new ArrayList<>();
-        purchaseRequest.items().stream().forEach(itemDTO -> {
+        purchaseRequest.items().forEach(itemDTO -> {
             setPurchaseItem(itemDTO, items);
         });
         purchase.setItems(items);
         Purchase saved = purchaseRepository.save(purchase);
         return modelMapper.map(saved, NewPurchaseDTO.class);
+    }
+
+    @Override
+    public List<PurchaseItemDTO> getPurchaseList() {
+        List<ResultPurchaseItem> purchaseList = purchaseRepository.getPurchaseList();
+        List<PurchaseItemDTO> map = modelMapper.map(purchaseList, new TypeToken<List<PurchaseItemDTO>>() {
+        }.getType());
+        return map;
     }
 
     private void setPurchaseItem(ItemDTO itemDTO, List<Item> items){
@@ -73,6 +85,11 @@ public class PurchaseServiceImpl implements PurchaseService {
             store = Store.builder().name(storeName).build();
         }
         purchase.setStore(store);
+    }
+
+    private void setCategory(CategoryDTO category, Purchase purchase) {
+        CategoryDTO savedCategoryDTO = categoryService.findByName(category.getName());
+        purchase.setCategory(modelMapper.map(savedCategoryDTO == null? category: savedCategoryDTO, Category.class));
     }
 
     private void setProduct(ProductData productData, ProductDTO productDTO){

@@ -1,4 +1,4 @@
-package com.bios.personalfinances.model.entity.dto;
+package com.bios.personalfinances.model.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

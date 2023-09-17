@@ -1,7 +1,7 @@
 package com.bios.personalfinances.service.impl;
 
 import com.bios.personalfinances.model.entity.PaymentMethod;
-import com.bios.personalfinances.model.entity.dto.PaymentMethodDTO;
+import com.bios.personalfinances.model.dto.PaymentMethodDTO;
 import com.bios.personalfinances.repository.PaymentMethodRepository;
 import com.bios.personalfinances.service.PaymentMethodService;
 import org.modelmapper.ModelMapper;

@@ -1,7 +1,7 @@
 package com.bios.personalfinances.service.impl;
 
 import com.bios.personalfinances.model.entity.Product;
-import com.bios.personalfinances.model.entity.dto.ProductDTO;
+import com.bios.personalfinances.model.dto.ProductDTO;
 import com.bios.personalfinances.repository.ProductRepository;
 import com.bios.personalfinances.service.ProductService;
 import org.modelmapper.ModelMapper;

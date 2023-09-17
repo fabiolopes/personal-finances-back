@@ -21,5 +21,7 @@ public class Purchase {
     private PaymentMethod paymentMethod;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Store store;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Category category;
     private BigDecimal total;
 }

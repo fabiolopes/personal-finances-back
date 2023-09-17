@@ -1,4 +1,4 @@
-package com.bios.personalfinances.model.entity.request;
+package com.bios.personalfinances.model.request;
 
 import java.math.BigDecimal;
 
