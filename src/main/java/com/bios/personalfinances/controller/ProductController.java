@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("product")
 public class ProductController {
@@ -19,5 +21,10 @@ public class ProductController {
     @GetMapping("/findByName/{name}")
     public ResponseEntity<ProductDTO> findByName(@PathVariable("name") String name) {
         return ResponseEntity.ok(productService.findByName(name));
+    }
+
+    @GetMapping("/findByNameStartsWith/{name}")
+    public ResponseEntity<List<ProductDTO>> findByNameStartsWith(@PathVariable("name") String name){
+        return ResponseEntity.ok(productService.findByNameStartsWith(name));
     }
 }
