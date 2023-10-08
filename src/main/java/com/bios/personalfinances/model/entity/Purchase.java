@@ -15,13 +15,13 @@ public class Purchase {
     @Id @GeneratedValue
     private Long id;
     private Instant date;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany
     private List<Item> items;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private PaymentMethod paymentMethod;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Store store;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Category category;
     private BigDecimal total;
 }

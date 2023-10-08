@@ -17,5 +17,5 @@ import javax.persistence.Id;
 public class PaymentMethod {
     @Id @GeneratedValue
     private Long id;
-    private String method;
+    private String name;
 }

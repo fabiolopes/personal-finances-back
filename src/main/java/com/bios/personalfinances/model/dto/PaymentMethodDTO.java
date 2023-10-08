@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentMethodDTO{
     private Long id;
-    private String method;
+    private String name;
 }

@@ -5,7 +5,7 @@ import com.bios.personalfinances.model.dto.PaymentMethodDTO;
 import java.util.List;
 
 public interface PaymentMethodService {
-    PaymentMethodDTO findByMethod(String method);
+    PaymentMethodDTO findByName(String name);
 
-    List<PaymentMethodDTO> findByMethodStartsWith(String method);
+    List<PaymentMethodDTO> findByNameStartsWith(String name);
 }

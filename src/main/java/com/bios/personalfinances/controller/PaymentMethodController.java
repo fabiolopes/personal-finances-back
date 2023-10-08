@@ -15,14 +15,14 @@ public class PaymentMethodController {
     @Autowired
     private PaymentMethodService paymentMethodService;
 
-    @GetMapping("/findByMethod/{method}")
-    public ResponseEntity<PaymentMethodDTO> findByMethod(@PathVariable("method") String method){
-        return ResponseEntity.ok(paymentMethodService.findByMethod(method));
+    @GetMapping("/findByName/{name}")
+    public ResponseEntity<PaymentMethodDTO> findByName(@PathVariable("name") String name){
+        return ResponseEntity.ok(paymentMethodService.findByName(name));
     }
 
-    @GetMapping("/findByMethodStartsWith/{method}")
-    public ResponseEntity<List<PaymentMethodDTO>> findByMethodStartsWith(@PathVariable("method") String method){
-        return ResponseEntity.ok(paymentMethodService.findByMethodStartsWith(method));
+    @GetMapping("/findByNameStartsWith/{name}")
+    public ResponseEntity<List<PaymentMethodDTO>> findByNameStartsWith(@PathVariable("name") String name){
+        return ResponseEntity.ok(paymentMethodService.findByNameStartsWith(name));
     }
 
 }

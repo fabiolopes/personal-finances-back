@@ -3,16 +3,13 @@ package com.bios.personalfinances.service.impl;
 import com.bios.personalfinances.model.dto.*;
 import com.bios.personalfinances.model.entity.*;
 import com.bios.personalfinances.model.request.PurchaseRequest;
-import com.bios.personalfinances.repository.PaymentMethodRepository;
-import com.bios.personalfinances.repository.ProductRepository;
-import com.bios.personalfinances.repository.PurchaseRepository;
-import com.bios.personalfinances.repository.StoreRepository;
-import com.bios.personalfinances.service.CategoryService;
+import com.bios.personalfinances.repository.*;
 import com.bios.personalfinances.service.PurchaseService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -37,13 +34,20 @@ public class PurchaseServiceImpl implements PurchaseService {
     private PurchaseRepository purchaseRepository;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
+    private  ProductDataRepository productDataRepository;
 
     @Override
+    @Transactional
     public NewPurchaseDTO newPurchase(PurchaseRequest purchaseRequest) {
         Purchase purchase = Purchase.builder().date(Instant.now()).total(purchaseRequest.total()).build();
         setStore(purchaseRequest.store().getName(), purchase);
-        setPaymentMethod(purchaseRequest.paymentMethod().getMethod(), purchase);
+        setPaymentMethod(purchaseRequest.paymentMethod().getName(), purchase);
         setCategory(purchaseRequest.category(), purchase);
         List<Item> items = new ArrayList<>();
         purchaseRequest.items().forEach(itemDTO -> {
@@ -66,15 +70,16 @@ public class PurchaseServiceImpl implements PurchaseService {
         ProductData productData = ProductData.builder().price(itemDTO.price())
                 .referenceDate(LocalDate.now()).build();
         setProduct(productData, itemDTO.product());
-        Item item = Item.builder().valuePaid(itemDTO.valuePaid()).qtd(itemDTO.qtd())
-                .date(Instant.now()).productData(productData).build();
+        productData = productDataRepository.save(productData);
+        Item item = itemRepository.save(Item.builder().valuePaid(itemDTO.valuePaid()).qtd(itemDTO.qtd())
+                .date(Instant.now()).productData(productData).build());
         items.add(item);
     }
 
-    private void setPaymentMethod(String method, Purchase purchase) {
-        PaymentMethod paymentMethod = paymentMethodRepository.findByMethod(method);
+    private void setPaymentMethod(String name, Purchase purchase) {
+        PaymentMethod paymentMethod = paymentMethodRepository.findByName(name);
         if(paymentMethod == null){
-            paymentMethod = PaymentMethod.builder().method(method).build();
+            paymentMethod = paymentMethodRepository.save(PaymentMethod.builder().name(name).build());
         }
         purchase.setPaymentMethod(paymentMethod);
     }
@@ -82,21 +87,24 @@ public class PurchaseServiceImpl implements PurchaseService {
     private void setStore(String storeName, Purchase purchase){
         Store store = storeRepository.findByName(storeName);
         if(store == null){
-            store = Store.builder().name(storeName).build();
+            store = storeRepository.save(Store.builder().name(storeName).build());
         }
         purchase.setStore(store);
     }
 
     private void setCategory(CategoryDTO category, Purchase purchase) {
-        CategoryDTO savedCategoryDTO = categoryService.findByName(category.getName());
-        purchase.setCategory(modelMapper.map(savedCategoryDTO == null? category: savedCategoryDTO, Category.class));
+        Category savedCategory = categoryRepository.findByName(category.getName());
+        if(savedCategory == null) {
+            savedCategory = categoryRepository.save(Category.builder().name(category.getName()).build());
+        }
+        purchase.setCategory(savedCategory);
     }
 
     private void setProduct(ProductData productData, ProductDTO productDTO){
         Product product = productRepository.findByName(productDTO.getName());
         if(product == null){
-            product = Product.builder().name(productDTO.getName())
-                    .description(productDTO.getDescription()).unit(productDTO.getUnit()).build();
+            product = productRepository.save(Product.builder().name(productDTO.getName())
+                    .description(productDTO.getDescription()).unit(productDTO.getUnit()).build());
         }
         productData.setProduct(product);
     }

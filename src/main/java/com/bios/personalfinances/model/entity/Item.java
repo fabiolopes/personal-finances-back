@@ -17,7 +17,7 @@ import java.time.Instant;
 public class Item {
     @Id @GeneratedValue
     private Long id;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private ProductData productData;
     private BigDecimal qtd;
     private Instant date;

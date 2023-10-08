@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class ProductData {
     @Id @GeneratedValue
     private Long id;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Product product;
     private LocalDate referenceDate;
     private BigDecimal price;
